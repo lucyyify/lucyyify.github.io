@@ -32,6 +32,7 @@ function testSpeech() {
         speech.textContent = 'Speech received: ' + speechResult + '.';
 
         var error = true;
+
         if(error = false) {
             var clickResult = speechResult.match(clickReg);
             var enterResult = speechResult.match(enterReg);
@@ -63,9 +64,9 @@ function testSpeech() {
                     window.scrollBy(0, 50);
                 }
             }
-            if(error) {
-                errorMsg = "Sorry invalid command, you said:" + speechResult;
-            }
+        }
+        if(error) {
+            errorMsg = "Sorry invalid command, you said:" + speechResult;
         }
     }
     recognition.onspeechend = function() {
