@@ -1,12 +1,19 @@
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 
-
-var testBtn = document.querySelector('button');
-var phrase = document.querySelector('.phrase');
+var recordBtn = document.querySelector('.recordBtn');
+var text = document.querySelector('.text');
 var speech = document.querySelector('.speech');
+var clickTxt = document.querySelector('.clickTxt');
+
+var clickReg = /click/gi;
+var enterReg = /enter/gi;
+var scrollReg = /scroll/gi;
+var appleReg = /apple/gi;
+var orangeReg = /orange/gi;
+var plumReg = /plum/gi;
 
 function testSpeech() {
-    console.log("initiating");
+    console.log('initializing');
     if(!SpeechRecognition){
         speech.textContent = 'Upgrade browser to support SpeechRecognition';
         return;
@@ -14,110 +21,58 @@ function testSpeech() {
     speech.textContent = '';
     var recognition = new SpeechRecognition();
 
-    testBtn.disabled = true;
-    testBtn.textContent = 'Test in progress';
+    recordBtn.disabled = true;
+    recordBtn.textContent = 'Recording in progress';
     recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
 
     recognition.start();
     recognition.onresult = function(event) {
         var speechResult = event.results[0][0].transcript;
-        phrase.textContent = 'Speech received: ' + speechResult + '.';
+        speech.textContent = 'Speech received: ' + speechResult + '.';
+
+        var clickResult = speechResult.match(clickReg);
+        var enterResult = speechResult.match(enterReg);
+        var scrollResult = speechResult.match(scrollReg);
+        if(clickResult){
+            var index = speechResult.search(clickReg) + 6; //6 is length of 'click '
+            var item = speechResult.substring(index).split()[0];
+            if(item.match(appleReg)){
+                changeClickText('apple');
+            } else if(item.match(orangeReg)){
+                changeClickText('orange');
+            } else if(item.match(plumReg)){
+                changeClickText('plum');
+            } else {
+                speech.textContent += "\n That click object doesnt exist!";
+            }
+        }
+        if(enterResult){
+            var index = speechResult.search(enterReg) + 6; //6 is length of 'enter '
+            var enterText = speechResult.substring(index);
+            text.textContent = enterText;
+        }
+        if(scrollResult){
+            var index = speechResult.search(scrollReg) + 7; //7 is length of 'scroll '
+            var scrollDir = speechResult.substring(index).split()[0];
+            if(scrollDir == 'up'){
+                window.scrollBy(0, -50);
+            }else if (scrollDir == 'down'){
+                window.scrollBy(0, 50);
+            }
+        }
     }
 
     recognition.onspeechend = function() {
         recognition.stop();
-        testBtn.disabled = false;
-        testBtn.textContent = 'Start new test';
+        recordBtn.disabled = false;
+        recordBtn.textContent = 'Press and Say Command';
     }
 }
 
-testBtn.addEventListener('click', testSpeech);
+function changeClickText(newStr){
+    clickTxt.textContent = newStr;
+}
 
 
+recordBtn.addEventListener('click', testSpeech);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function testSpeech() {
-//   testBtn.disabled = true;
-//   testBtn.textContent = 'Test in progress';
-
-//   var phrase = phrases[randomPhrase()];
-//   phrasePara.textContent = phrase;
-//   resultPara.textContent = 'Right or wrong?';
-//   resultPara.style.background = 'rgba(0,0,0,0.2)';
-//   diagnosticPara.textContent = '...diagnostic messages';
-
-//   var grammar = '#JSGF V1.0; grammar phrase; public <phrase> = ' + phrase +';';
-//   var recognition = new SpeechRecognition();
-//   var speechRecognitionList = new SpeechGrammarList();
-//   speechRecognitionList.addFromString(grammar, 1);
-//   recognition.grammars = speechRecognitionList;
-//   recognition.lang = 'en-US';
-//   recognition.interimResults = false;
-//   recognition.maxAlternatives = 1;
-
-//   recognition.start();
-
-//   recognition.onresult = function(event) {
-//     // The SpeechRecognitionEvent results property returns a SpeechRecognitionResultList object
-//     // The SpeechRecognitionResultList object contains SpeechRecognitionResult objects.
-//     // It has a getter so it can be accessed like an array
-//     // The first [0] returns the SpeechRecognitionResult at position 0.
-//     // Each SpeechRecognitionResult object contains SpeechRecognitionAlternative objects that contain individual results.
-//     // These also have getters so they can be accessed like arrays.
-//     // The second [0] returns the SpeechRecognitionAlternative at position 0.
-//     // We then return the transcript property of the SpeechRecognitionAlternative object 
-//     var speechResult = event.results[0][0].transcript;
-//     diagnosticPara.textContent = 'Speech received: ' + speechResult + '.';
-//     if(speechResult === phrase) {
-//       resultPara.textContent = 'I heard the correct phrase!';
-//       resultPara.style.background = 'lime';
-//     } else {
-//       resultPara.textContent = 'That didn\'t sound right.';
-//       resultPara.style.background = 'red';
-//     }
-
-//     console.log('Confidence: ' + event.results[0][0].confidence);
-//   }
-
-//   recognition.onspeechend = function() {
-//     recognition.stop();
-//     testBtn.disabled = false;
-//     testBtn.textContent = 'Start new test';
-//   }
-
-//   recognition.onerror = function(event) {
-//     testBtn.disabled = false;
-//     testBtn.textContent = 'Start new test';
-//     diagnosticPara.textContent = 'Error occurred in recognition: ' + event.error;
-//   }
-
-// }
