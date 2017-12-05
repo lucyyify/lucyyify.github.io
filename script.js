@@ -64,7 +64,7 @@ function testSpeech() {
                 }
             }
             if(error) {
-                var errorMsg = "Sorry invalid command, you said:" + speechText;
+                errorMsg = "Sorry invalid command, you said:" + speechResult;
                 }
             }
         }
