@@ -61,7 +61,7 @@ function testSpeech() {
             }
         }
         else() {
-            text.textContent = "error";
+            speechResult == "error";
         }
     }
 
