@@ -60,8 +60,8 @@ function testSpeech() {
                 window.scrollBy(0, 50);
             }
         }
-        else {
-            return("error");
+        else() {
+            text.textContent = "error";
         }
     }
 
