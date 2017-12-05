@@ -72,7 +72,7 @@ function testSpeech() {
             }
         }
         else {
-            speech.textContent = "Sorry invalid command, you said:" + speechResult;
+            speech.textContent = "Sorry, I do not understand.";
         }
     }
     recognition.onspeechend = function() {
