@@ -18,6 +18,7 @@ function testSpeech() {
         speech.textContent = 'Upgrade browser to support SpeechRecognition';
         return;
     }
+
     speech.textContent = '';
     var recognition = new SpeechRecognition();
 
@@ -30,38 +31,43 @@ function testSpeech() {
         var speechResult = event.results[0][0].transcript;
         speech.textContent = 'Speech received: ' + speechResult + '.';
 
-        var clickResult = speechResult.match(clickReg);
-        var enterResult = speechResult.match(enterReg);
-        var scrollResult = speechResult.match(scrollReg);
-        if(clickResult){
-            var index = speechResult.search(clickReg) + 6; //6 is length of 'click '
-            var item = speechResult.substring(index).split()[0];
-            if(item.match(appleReg)){
-                changeClickText('apple');
-            } else if(item.match(orangeReg)){
-                changeClickText('orange');
-            } else if(item.match(plumReg)){
-                changeClickText('plum');
-            } else {
-                speech.textContent += "\n That click object doesnt exist!";
+        var error = true;
+        if(error = false) {
+            var clickResult = speechResult.match(clickReg);
+            var enterResult = speechResult.match(enterReg);
+            var scrollResult = speechResult.match(scrollReg);
+            if(clickResult){
+                var index = speechResult.search(clickReg) + 6; //6 is length of 'click '
+                var item = speechResult.substring(index).split()[0];
+                if(item.match(appleReg)){
+                    changeClickText('apple');
+                } else if(item.match(orangeReg)){
+                    changeClickText('orange');
+                } else if(item.match(plumReg)){
+                    changeClickText('plum');
+                } else {
+                    speech.textContent += "\n That click object doesnt exist!";
+                }
             }
-        }
-        if(enterResult){
-            var index = speechResult.search(enterReg) + 6; //6 is length of 'enter '
-            var enterText = speechResult.substring(index);
-            text.textContent = enterText;
-        }
-        if(scrollResult){
-            var index = speechResult.search(scrollReg) + 7; //7 is length of 'scroll '
-            var scrollDir = speechResult.substring(index).split()[0];
-            if(scrollDir == 'up'){
-                window.scrollBy(0, -50);
-            }else if (scrollDir == 'down'){
-                window.scrollBy(0, 50);
+            if(enterResult){
+                var index = speechResult.search(enterReg) + 6; //6 is length of 'enter '
+                var enterText = speechResult.substring(index);
+                text.textContent = enterText;
             }
-        }
-        else() {
-            speechResult == "error";
+            if(scrollResult){
+                var index = speechResult.search(scrollReg) + 7; //7 is length of 'scroll '
+                var scrollDir = speechResult.substring(index).split()[0];
+                if(scrollDir == 'up'){
+                    window.scrollBy(0, -50);
+                }else if (scrollDir == 'down'){
+                    window.scrollBy(0, 50);
+                }
+            }
+            if(error) {
+                var errorMsg = "Sorry invalid command, you said:" + speechText;
+            }
+}
+            }
         }
     }
 
