@@ -65,16 +65,15 @@ function testSpeech() {
             }
             if(error) {
                 errorMsg = "Sorry invalid command, you said:" + speechResult;
-                }
             }
         }
     }
+}
 
-    recognition.onspeechend = function() {
-        recognition.stop();
-        recordBtn.disabled = false;
-        recordBtn.textContent = 'Press and Say Command';
-    }
+recognition.onspeechend = function() {
+    recognition.stop();
+    recordBtn.disabled = false;
+    recordBtn.textContent = 'Press and Say Command';
 }
 
 function changeClickText(newStr){
