@@ -60,6 +60,9 @@ function testSpeech() {
                 window.scrollBy(0, 50);
             }
         }
+        else(){
+            return("error");
+        }
     }
 
     recognition.onspeechend = function() {
