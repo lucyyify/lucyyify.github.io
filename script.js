@@ -29,17 +29,18 @@ function testSpeech() {
     recognition.start();
     recognition.onresult = function(event) {
         var speechResult = event.results[0][0].transcript;
-        speech.textContent = 'Speech received: ' + speechResult + '.';
+        // speech.textContent = 'Speech received: ' + speechResult + '.';
 
-        var error = true;
+        // var error = true;
 
         var clickResult = speechResult.match(clickReg);
         var enterResult = speechResult.match(enterReg);
         var scrollResult = speechResult.match(scrollReg);
         if(clickResult){
+            speech.textContent = 'Speech received: ' + speechResult + '.';
             var index = speechResult.search(clickReg) + 6; //6 is length of 'click '
             var item = speechResult.substring(index).split()[0];
-            error = false;
+            // error = false;
             if(item.match(appleReg)){
                 changeClickText('apple');
             } else if(item.match(orangeReg)){
@@ -52,24 +53,26 @@ function testSpeech() {
             }
         }
         if(enterResult){
+            speech.textContent = 'Speech received: ' + speechResult + '.';
             var index = speechResult.search(enterReg) + 6; //6 is length of 'enter '
             var enterText = speechResult.substring(index);
             text.textContent = enterText;
-            error = false;
+            // error = false;
         }
         if(scrollResult){
+            speech.textContent = 'Speech received: ' + speechResult + '.';
             var index = speechResult.search(scrollReg) + 7; //7 is length of 'scroll '
             var scrollDir = speechResult.substring(index).split()[0];
             if(scrollDir == 'up'){
                 error = false;
                 window.scrollBy(0, -50);
             }else if (scrollDir == 'down'){
-                error = false;
+                // error = false;
                 window.scrollBy(0, 50);
             }
         }
-        if(error) {
-            errorMsg = "Sorry invalid command, you said:" + speechResult;
+        else {
+            speech.textContent = "Sorry invalid command, you said:" + speechResult;
         }
     }
     recognition.onspeechend = function() {
