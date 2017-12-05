@@ -60,7 +60,7 @@ function testSpeech() {
                 window.scrollBy(0, 50);
             }
         }
-        else(){
+        else {
             return("error");
         }
     }
